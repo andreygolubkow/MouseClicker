@@ -52,7 +52,9 @@
     <Compile Include="ClickerMainForm.Designer.cs">
       <DependentUpon>ClickerMainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MousePoint.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ClickerMainForm.resx">
       <DependentUpon>ClickerMainForm.cs</DependentUpon>
@@ -67,6 +69,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Properties\DataSources\MousePoint.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

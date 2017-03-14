@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClickerMainForm));
             this.pointsGroupBox = new System.Windows.Forms.GroupBox();
             this.pointsGridView = new System.Windows.Forms.DataGridView();
@@ -43,18 +44,25 @@
             this.intervalTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.startMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pointDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.intervalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mousePointBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.pointsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).BeginInit();
             this.mainMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mousePointBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // pointsGroupBox
             // 
+            this.pointsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pointsGroupBox.Controls.Add(this.pointsGridView);
-            this.pointsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pointsGroupBox.Location = new System.Drawing.Point(0, 24);
+            this.pointsGroupBox.Location = new System.Drawing.Point(0, 27);
             this.pointsGroupBox.Name = "pointsGroupBox";
-            this.pointsGroupBox.Size = new System.Drawing.Size(601, 283);
+            this.pointsGroupBox.Size = new System.Drawing.Size(702, 309);
             this.pointsGroupBox.TabIndex = 0;
             this.pointsGroupBox.TabStop = false;
             this.pointsGroupBox.Text = "Список точек";
@@ -63,12 +71,17 @@
             // 
             this.pointsGridView.AllowUserToAddRows = false;
             this.pointsGridView.AllowUserToDeleteRows = false;
+            this.pointsGridView.AutoGenerateColumns = false;
             this.pointsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.pointsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.pointDataGridViewTextBoxColumn,
+            this.intervalDataGridViewTextBoxColumn});
+            this.pointsGridView.DataSource = this.mousePointBindingSource;
             this.pointsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pointsGridView.Location = new System.Drawing.Point(3, 16);
             this.pointsGridView.Name = "pointsGridView";
             this.pointsGridView.ReadOnly = true;
-            this.pointsGridView.Size = new System.Drawing.Size(595, 264);
+            this.pointsGridView.Size = new System.Drawing.Size(696, 290);
             this.pointsGridView.TabIndex = 0;
             // 
             // mainMenu
@@ -81,7 +94,7 @@
             this.stopMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(601, 24);
+            this.mainMenu.Size = new System.Drawing.Size(702, 24);
             this.mainMenu.TabIndex = 1;
             this.mainMenu.Text = "menuStrip1";
             // 
@@ -99,14 +112,14 @@
             // 
             this.openFileMenuItem.Image = global::MouseClicker.Properties.Resources.folder_yellow_open_3717;
             this.openFileMenuItem.Name = "openFileMenuItem";
-            this.openFileMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openFileMenuItem.Size = new System.Drawing.Size(132, 22);
             this.openFileMenuItem.Text = "Открыть";
             // 
             // saveFileMenuItem
             // 
             this.saveFileMenuItem.Image = global::MouseClicker.Properties.Resources.document_save_9644;
             this.saveFileMenuItem.Name = "saveFileMenuItem";
-            this.saveFileMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveFileMenuItem.Size = new System.Drawing.Size(132, 22);
             this.saveFileMenuItem.Text = "Сохранить";
             // 
             // editSubMenu
@@ -123,15 +136,19 @@
             // 
             this.addPointMenuItem.Image = global::MouseClicker.Properties.Resources.add2__3143;
             this.addPointMenuItem.Name = "addPointMenuItem";
+            this.addPointMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.addPointMenuItem.Size = new System.Drawing.Size(152, 22);
             this.addPointMenuItem.Text = "Добавить";
+            this.addPointMenuItem.Click += new System.EventHandler(this.AddPointMenuItemClick);
             // 
             // removePointMenuItem
             // 
             this.removePointMenuItem.Image = global::MouseClicker.Properties.Resources.error_6891;
             this.removePointMenuItem.Name = "removePointMenuItem";
+            this.removePointMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
             this.removePointMenuItem.Size = new System.Drawing.Size(152, 22);
             this.removePointMenuItem.Text = "Удалить";
+            this.removePointMenuItem.Click += new System.EventHandler(this.removePointMenuItem_Click);
             // 
             // settingsSubMenu
             // 
@@ -176,21 +193,51 @@
             this.stopMenuItem.Text = "Остановить";
             this.stopMenuItem.Visible = false;
             // 
+            // pointDataGridViewTextBoxColumn
+            // 
+            this.pointDataGridViewTextBoxColumn.DataPropertyName = "Point";
+            this.pointDataGridViewTextBoxColumn.HeaderText = "Point";
+            this.pointDataGridViewTextBoxColumn.Name = "pointDataGridViewTextBoxColumn";
+            this.pointDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // intervalDataGridViewTextBoxColumn
+            // 
+            this.intervalDataGridViewTextBoxColumn.DataPropertyName = "Interval";
+            this.intervalDataGridViewTextBoxColumn.HeaderText = "Interval";
+            this.intervalDataGridViewTextBoxColumn.Name = "intervalDataGridViewTextBoxColumn";
+            this.intervalDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // mousePointBindingSource
+            // 
+            this.mousePointBindingSource.DataSource = typeof(MouseClicker.MousePoint);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(0, 339);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.statusStrip1.Size = new System.Drawing.Size(702, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
             // ClickerMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(601, 307);
+            this.ClientSize = new System.Drawing.Size(702, 361);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pointsGroupBox);
             this.Controls.Add(this.mainMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mainMenu;
             this.Name = "ClickerMainForm";
             this.Text = "MouseClicker";
+            this.Load += new System.EventHandler(this.ClickerMainFormLoad);
             this.pointsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mousePointBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,6 +259,10 @@
         private System.Windows.Forms.ToolStripTextBox intervalTextBox;
         private System.Windows.Forms.ToolStripMenuItem startMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pointDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn intervalDataGridViewTextBoxColumn;
+        private System.Windows.Forms.BindingSource mousePointBindingSource;
+        private System.Windows.Forms.StatusStrip statusStrip1;
     }
 }
 
