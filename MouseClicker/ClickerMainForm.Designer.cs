@@ -48,6 +48,7 @@
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.pointDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.intervalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mousePointBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -182,7 +183,7 @@
             this.intervalTextBox.Size = new System.Drawing.Size(100, 23);
             this.intervalTextBox.ToolTipText = "Пауза между повторениями";
             this.intervalTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.IntervalTextBoxKeyDown);
-            this.intervalTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.intervalTextBox_KeyPress);
+            this.intervalTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IntervalTextBoxKeyPress);
             this.intervalTextBox.Click += new System.EventHandler(this.intervalTextBox_Click);
             // 
             // startMenuItem
@@ -191,6 +192,7 @@
             this.startMenuItem.Name = "startMenuItem";
             this.startMenuItem.Size = new System.Drawing.Size(73, 20);
             this.startMenuItem.Text = "Запуск";
+            this.startMenuItem.Click += new System.EventHandler(this.StartMenuItemClick);
             // 
             // stopMenuItem
             // 
@@ -199,6 +201,7 @@
             this.stopMenuItem.Size = new System.Drawing.Size(99, 20);
             this.stopMenuItem.Text = "Остановить";
             this.stopMenuItem.Visible = false;
+            this.stopMenuItem.Click += new System.EventHandler(this.StopMenuItemClick);
             // 
             // statusBar
             // 
@@ -227,6 +230,14 @@
             this.saveFileDialog.Filter = "Список координат| *.plist";
             this.saveFileDialog.Title = "Сохранить список координат";
             this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveFileDialogFileOk);
+            // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerDoWork);
+            this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorkerProgressChanged);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorkerRunWorkerCompleted);
             // 
             // pointDataGridViewTextBoxColumn
             // 
@@ -292,6 +303,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn intervalDataGridViewTextBoxColumn;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }
 

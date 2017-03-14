@@ -53,6 +53,7 @@
       <DependentUpon>ClickerMainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DataSerializer.cs" />
+    <Compile Include="MouseControl.cs" />
     <Compile Include="MousePoint.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Project.cs" />

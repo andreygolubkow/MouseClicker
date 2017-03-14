@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace MouseClicker
 {
     public partial class ClickerMainForm : Form
     {
+
         private Project pointProject;
         public ClickerMainForm()
         {
@@ -57,11 +61,12 @@ namespace MouseClicker
         private void RepeatMenuItemClick(object sender, EventArgs e)
         {
             pointProject.Repeat = repeatMenuItem.Checked;
-            if ( pointProject.Repeat )
+            if ( !pointProject.Repeat )
             {
-                intervalTextBox.TextBox.Text = "1000";
-                statusLabel.Text = "Не забудьте указать интервал(в мс.) в следующем поле, после кнопки.";
+                return;
             }
+            intervalTextBox.TextBox.Text = Convert.ToString(pointProject.RepeatInterval);
+            statusLabel.Text = "Не забудьте указать интервал(в мс.) в следующем поле, после кнопки.";
         }
 
         private void IntervalTextBoxKeyDown(object sender, KeyEventArgs e)
@@ -69,7 +74,7 @@ namespace MouseClicker
 
         }
 
-        private void intervalTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void IntervalTextBoxKeyPress(object sender, KeyPressEventArgs e)
         {
             Validators.IntEnterValidator(e);
             pointProject.RepeatInterval = Convert.ToInt32(intervalTextBox.Text);
@@ -97,6 +102,8 @@ namespace MouseClicker
             {
                 DataSerializer.DeserializeBin(openFileDialog.FileName, ref pointProject);
                 mousePointBindingSource.DataSource = pointProject.PointsList;
+                intervalTextBox.TextBox.Text = Convert.ToString(pointProject.RepeatInterval);
+                repeatMenuItem.Checked = pointProject.Repeat;
                 statusLabel.Text = "";
             }
             catch ( Exception exception )
@@ -116,6 +123,67 @@ namespace MouseClicker
             {
                 statusLabel.Text = exception.Message;
             }
+        }
+
+        private void StartMenuItemClick(object sender, EventArgs e)
+        {
+            fileSubMenu.Visible = false;
+            editSubMenu.Visible = false;
+            startMenuItem.Visible = false;
+            settingsSubMenu.Visible = false;
+            stopMenuItem.Visible = true;
+            pointsGridView.Enabled = false;
+            addPointMenuItem.Enabled = false;
+            removePointMenuItem.Enabled = false;
+            mousePointBindingSource.SuspendBinding();
+            backgroundWorker.RunWorkerAsync();
+            statusLabel.Text = "Поток запущен";
+        }
+
+        private void StopMenuItemClick(object sender, EventArgs e)
+        {
+            backgroundWorker.CancelAsync();
+            statusLabel.Text = "Ожидание завершения потока";
+        }
+
+        private void BackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var clickList = new List<MousePoint>(pointProject.PointsList);
+            do
+            {
+                foreach (MousePoint point in clickList)
+                {
+                    if ( backgroundWorker.CancellationPending )
+                    {
+                        continue;
+                    }
+                    Thread.Sleep(point.Interval);
+                    //Клик
+                    MouseControl.Move(point.Point.X, point.Point.Y);
+                    MouseControl.Click();
+
+                }
+                Thread.Sleep(pointProject.RepeatInterval);
+            }
+            while ( pointProject.Repeat && !backgroundWorker.CancellationPending);
+        }
+
+        private void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+        }
+
+        private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            fileSubMenu.Visible = true;
+            editSubMenu.Visible = true;
+            startMenuItem.Visible = true;
+            settingsSubMenu.Visible = true;
+            stopMenuItem.Visible = false;
+            mousePointBindingSource.ResumeBinding();
+            pointsGridView.Enabled = true;
+            addPointMenuItem.Enabled = true;
+            removePointMenuItem.Enabled = true;
+            statusLabel.Text = "Поток завершен";
         }
     }
 }
