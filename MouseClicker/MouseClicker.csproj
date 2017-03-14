@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>help-contextual_6480.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,8 +55,13 @@
     <Compile Include="ClickerMainForm.Designer.cs">
       <DependentUpon>ClickerMainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataSerializer.cs" />
+    <Compile Include="MouseControl.cs" />
+    <Compile Include="MousePoint.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators.cs" />
     <EmbeddedResource Include="ClickerMainForm.resx">
       <DependentUpon>ClickerMainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -67,6 +75,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Properties\DataSources\MousePoint.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -106,6 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\document-save_9644.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="help-contextual_6480.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
