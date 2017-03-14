@@ -44,13 +44,17 @@
             this.intervalTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.startMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusBar = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.pointDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.intervalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mousePointBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.pointsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).BeginInit();
             this.mainMenu.SuspendLayout();
+            this.statusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mousePointBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -80,7 +84,6 @@
             this.pointsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pointsGridView.Location = new System.Drawing.Point(3, 16);
             this.pointsGridView.Name = "pointsGridView";
-            this.pointsGridView.ReadOnly = true;
             this.pointsGridView.Size = new System.Drawing.Size(696, 290);
             this.pointsGridView.TabIndex = 0;
             // 
@@ -114,6 +117,7 @@
             this.openFileMenuItem.Name = "openFileMenuItem";
             this.openFileMenuItem.Size = new System.Drawing.Size(132, 22);
             this.openFileMenuItem.Text = "Открыть";
+            this.openFileMenuItem.Click += new System.EventHandler(this.OpenFileMenuItemClick);
             // 
             // saveFileMenuItem
             // 
@@ -121,6 +125,7 @@
             this.saveFileMenuItem.Name = "saveFileMenuItem";
             this.saveFileMenuItem.Size = new System.Drawing.Size(132, 22);
             this.saveFileMenuItem.Text = "Сохранить";
+            this.saveFileMenuItem.Click += new System.EventHandler(this.SaveFileMenuItemClick);
             // 
             // editSubMenu
             // 
@@ -137,7 +142,7 @@
             this.addPointMenuItem.Image = global::MouseClicker.Properties.Resources.add2__3143;
             this.addPointMenuItem.Name = "addPointMenuItem";
             this.addPointMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.addPointMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addPointMenuItem.Size = new System.Drawing.Size(145, 22);
             this.addPointMenuItem.Text = "Добавить";
             this.addPointMenuItem.Click += new System.EventHandler(this.AddPointMenuItemClick);
             // 
@@ -146,9 +151,9 @@
             this.removePointMenuItem.Image = global::MouseClicker.Properties.Resources.error_6891;
             this.removePointMenuItem.Name = "removePointMenuItem";
             this.removePointMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.removePointMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removePointMenuItem.Size = new System.Drawing.Size(145, 22);
             this.removePointMenuItem.Text = "Удалить";
-            this.removePointMenuItem.Click += new System.EventHandler(this.removePointMenuItem_Click);
+            this.removePointMenuItem.Click += new System.EventHandler(this.RemovePointMenuItemClick);
             // 
             // settingsSubMenu
             // 
@@ -162,12 +167,11 @@
             // 
             // repeatMenuItem
             // 
-            this.repeatMenuItem.Checked = true;
             this.repeatMenuItem.CheckOnClick = true;
-            this.repeatMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.repeatMenuItem.Name = "repeatMenuItem";
             this.repeatMenuItem.Size = new System.Drawing.Size(162, 22);
             this.repeatMenuItem.Text = "Повторять цикл";
+            this.repeatMenuItem.Click += new System.EventHandler(this.RepeatMenuItemClick);
             // 
             // intervalTextBox
             // 
@@ -177,6 +181,9 @@
             this.intervalTextBox.Name = "intervalTextBox";
             this.intervalTextBox.Size = new System.Drawing.Size(100, 23);
             this.intervalTextBox.ToolTipText = "Пауза между повторениями";
+            this.intervalTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.IntervalTextBoxKeyDown);
+            this.intervalTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.intervalTextBox_KeyPress);
+            this.intervalTextBox.Click += new System.EventHandler(this.intervalTextBox_Click);
             // 
             // startMenuItem
             // 
@@ -193,39 +200,56 @@
             this.stopMenuItem.Text = "Остановить";
             this.stopMenuItem.Visible = false;
             // 
+            // statusBar
+            // 
+            this.statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            this.statusBar.Location = new System.Drawing.Point(0, 339);
+            this.statusBar.Name = "statusBar";
+            this.statusBar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.statusBar.Size = new System.Drawing.Size(702, 22);
+            this.statusBar.TabIndex = 2;
+            this.statusBar.Text = "statusStrip1";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "Список координат| *.plist";
+            this.openFileDialog.Title = "Открыть список координат";
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialogFileOk);
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "Список координат| *.plist";
+            this.saveFileDialog.Title = "Сохранить список координат";
+            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveFileDialogFileOk);
+            // 
             // pointDataGridViewTextBoxColumn
             // 
             this.pointDataGridViewTextBoxColumn.DataPropertyName = "Point";
-            this.pointDataGridViewTextBoxColumn.HeaderText = "Point";
+            this.pointDataGridViewTextBoxColumn.HeaderText = "Точка";
             this.pointDataGridViewTextBoxColumn.Name = "pointDataGridViewTextBoxColumn";
-            this.pointDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // intervalDataGridViewTextBoxColumn
             // 
             this.intervalDataGridViewTextBoxColumn.DataPropertyName = "Interval";
-            this.intervalDataGridViewTextBoxColumn.HeaderText = "Interval";
+            this.intervalDataGridViewTextBoxColumn.HeaderText = "Ожидание";
             this.intervalDataGridViewTextBoxColumn.Name = "intervalDataGridViewTextBoxColumn";
-            this.intervalDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // mousePointBindingSource
             // 
             this.mousePointBindingSource.DataSource = typeof(MouseClicker.MousePoint);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 339);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip1.Size = new System.Drawing.Size(702, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
             // 
             // ClickerMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(702, 361);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusBar);
             this.Controls.Add(this.pointsGroupBox);
             this.Controls.Add(this.mainMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -237,6 +261,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
+            this.statusBar.ResumeLayout(false);
+            this.statusBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mousePointBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -259,10 +285,13 @@
         private System.Windows.Forms.ToolStripTextBox intervalTextBox;
         private System.Windows.Forms.ToolStripMenuItem startMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopMenuItem;
+        private System.Windows.Forms.BindingSource mousePointBindingSource;
+        private System.Windows.Forms.StatusStrip statusBar;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn pointDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn intervalDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource mousePointBindingSource;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
 

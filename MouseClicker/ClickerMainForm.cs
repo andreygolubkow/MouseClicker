@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MouseClicker
@@ -16,8 +10,16 @@ namespace MouseClicker
         public ClickerMainForm()
         {
             InitializeComponent();
-            pointProject = new Project();
-            mousePointBindingSource.DataSource = pointProject.PointsList;
+            try
+            {
+                pointProject = new Project();
+                mousePointBindingSource.DataSource = pointProject.PointsList;
+                statusLabel.Text = "";
+            }
+            catch (Exception exception)
+            {
+                statusLabel.Text = exception.Message;
+            }
         }
 
         private void ClickerMainFormLoad(object sender, EventArgs e)
@@ -27,15 +29,93 @@ namespace MouseClicker
 
         private void AddPointMenuItemClick(object sender, EventArgs e)
         {
-            Point curPoint = Cursor.Position;
-            mousePointBindingSource.Add(new MousePoint(curPoint, 1));
-            mousePointBindingSource.MoveLast();
+            try
+            {
+                Point curPoint = Cursor.Position;
+                mousePointBindingSource.Add(new MousePoint(curPoint, 1));
+                mousePointBindingSource.MoveLast();
+            }
+            catch (Exception exception)
+            {
+                statusLabel.Text = exception.Message;
+            }
         }
 
-        private void removePointMenuItem_Click(object sender, EventArgs e)
+        private void RemovePointMenuItemClick(object sender, EventArgs e)
+        {
+            try
+            {
+                mousePointBindingSource.RemoveCurrent();
+                statusLabel.Text = "";
+            }
+            catch ( Exception exception )
+            {
+                statusLabel.Text = exception.Message;
+            }
+        }
+
+        private void RepeatMenuItemClick(object sender, EventArgs e)
+        {
+            pointProject.Repeat = repeatMenuItem.Checked;
+            if ( pointProject.Repeat )
+            {
+                intervalTextBox.TextBox.Text = "1000";
+                statusLabel.Text = "Не забудьте указать интервал(в мс.) в следующем поле, после кнопки.";
+            }
+        }
+
+        private void IntervalTextBoxKeyDown(object sender, KeyEventArgs e)
         {
 
-            mousePointBindingSource.RemoveCurrent();
+        }
+
+        private void intervalTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Validators.IntEnterValidator(e);
+            pointProject.RepeatInterval = Convert.ToInt32(intervalTextBox.Text);
+        }
+
+        private void intervalTextBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OpenFileMenuItemClick(object sender, EventArgs e)
+        {
+            openFileDialog.ShowDialog();
+        }
+
+        private void SaveFileMenuItemClick(object sender, EventArgs e)
+        {
+            saveFileDialog.ShowDialog();
+        }
+
+        private void OpenFileDialogFileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            pointProject = new Project();
+            try
+            {
+                DataSerializer.DeserializeBin(openFileDialog.FileName, ref pointProject);
+                mousePointBindingSource.DataSource = pointProject.PointsList;
+                statusLabel.Text = "";
+            }
+            catch ( Exception exception )
+            {
+                statusLabel.Text = exception.Message;
+            }
+        }
+
+        private void SaveFileDialogFileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                DataSerializer.SerializeBin(saveFileDialog.FileName, ref pointProject);
+                statusLabel.Text = "";
+            }
+            catch (Exception exception)
+            {
+                statusLabel.Text = exception.Message;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace MouseClicker
 {
+    [Serializable]
     public class Project
     {
         public List<MousePoint> PointsList;

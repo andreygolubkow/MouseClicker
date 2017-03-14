@@ -3,6 +3,7 @@ using System.Drawing;
 
 namespace MouseClicker
 {
+    [Serializable]
     public class MousePoint
     {
         private Point _point;
