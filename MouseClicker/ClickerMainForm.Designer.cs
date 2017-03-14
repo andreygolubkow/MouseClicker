@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClickerMainForm));
             this.pointsGroupBox = new System.Windows.Forms.GroupBox();
             this.pointsGridView = new System.Windows.Forms.DataGridView();
+            this.mousePointBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileSubMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,12 +52,11 @@
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.pointDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.intervalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mousePointBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.pointsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mousePointBindingSource)).BeginInit();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mousePointBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // pointsGroupBox
@@ -87,6 +87,10 @@
             this.pointsGridView.Name = "pointsGridView";
             this.pointsGridView.Size = new System.Drawing.Size(696, 290);
             this.pointsGridView.TabIndex = 0;
+            // 
+            // mousePointBindingSource
+            // 
+            this.mousePointBindingSource.DataSource = typeof(MouseClicker.MousePoint);
             // 
             // mainMenu
             // 
@@ -181,7 +185,7 @@
             this.intervalTextBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower;
             this.intervalTextBox.Name = "intervalTextBox";
             this.intervalTextBox.Size = new System.Drawing.Size(100, 23);
-            this.intervalTextBox.ToolTipText = "Пауза между повторениями";
+            this.intervalTextBox.ToolTipText = "Пауза между повторениями(мс.)";
             this.intervalTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.IntervalTextBoxKeyDown);
             this.intervalTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IntervalTextBoxKeyPress);
             this.intervalTextBox.Click += new System.EventHandler(this.intervalTextBox_Click);
@@ -248,12 +252,8 @@
             // intervalDataGridViewTextBoxColumn
             // 
             this.intervalDataGridViewTextBoxColumn.DataPropertyName = "Interval";
-            this.intervalDataGridViewTextBoxColumn.HeaderText = "Ожидание";
+            this.intervalDataGridViewTextBoxColumn.HeaderText = "Ожидание(мс.)";
             this.intervalDataGridViewTextBoxColumn.Name = "intervalDataGridViewTextBoxColumn";
-            // 
-            // mousePointBindingSource
-            // 
-            this.mousePointBindingSource.DataSource = typeof(MouseClicker.MousePoint);
             // 
             // ClickerMainForm
             // 
@@ -270,11 +270,11 @@
             this.Load += new System.EventHandler(this.ClickerMainFormLoad);
             this.pointsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mousePointBindingSource)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.statusBar.ResumeLayout(false);
             this.statusBar.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mousePointBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -299,11 +299,11 @@
         private System.Windows.Forms.BindingSource mousePointBindingSource;
         private System.Windows.Forms.StatusStrip statusBar;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pointDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn intervalDataGridViewTextBoxColumn;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pointDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn intervalDataGridViewTextBoxColumn;
     }
 }
 
